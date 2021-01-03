@@ -42,7 +42,7 @@ services:
     image: ${NGINX_PROXY_IMAGE:-jwilder/nginx-proxy}:${NGINX_PROXY_VERSION:-latest}
     restart: unless-stopped
     volumes:
-      - ${SITE_FILES}/certs:/etc/nginx/certs
+      - ${CERTS_FILES}/certs:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
     ports:
       - "${IP:-0.0.0.0}:${DOCKER_HTTP:-80}:80"
