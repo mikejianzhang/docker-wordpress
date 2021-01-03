@@ -35,6 +35,19 @@ services:
       options:
         max-size: ${LOGGING_OPTIONS_MAX_SIZE:-200k}
 
+  new-site-nginx-proxy:
+    depends_on:
+      - new-site-wordpress
+    container_name: ${CONTAINER_NGINX_PROXY_NAME}
+    image: ${NGINX_PROXY_IMAGE:-jwilder/nginx-proxy}:${NGINX_PROXY_VERSION:-latest}
+    restart: unless-stopped
+    volumes:
+      - ${SITE_FILES}/certs:/etc/nginx/certs
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - "${IP:-0.0.0.0}:${DOCKER_HTTP:-80}:80"
+      - "${IP:-0.0.0.0}:${DOCKER_HTTPS:-443}:443"
+
   wpcli:
     image: tatemz/wp-cli
     volumes:
